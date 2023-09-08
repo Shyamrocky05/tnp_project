@@ -1,0 +1,166 @@
+<!-- <h1>Sign up</h1>
+
+<style>
+    h4 {
+        color: red;
+    }
+</style>
+
+{% for m in messages %}
+<h4>{{m}}</h4>
+{% endfor %}
+<form method="POST" action="register">
+    {% csrf_token %}
+    <p>Roll Number:</p>
+    <input type="text" name="username"/>
+    <p>Email:</p>
+    <input type="email" name="email"/>
+    <p>Password:</p>
+    <input type="password" name="password"/><br>
+    <p>Repeat Password:</p>
+    <input type="password" name="cpassword"/><br>
+    <input type="submit">
+</form> -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>TNP</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-4" href="#">
+            <span class="text-light fs-4">TNP</span>CELL
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav ms-auto">
+                  <a class="nav-link ms-4 fs-5" href="index">Home</a>
+                  <a class="nav-link ms-4 fs-5" href="about">About</a>
+                  <a class="nav-link ms-4 fs-5" href="training">Training</a>
+                  <a class="nav-link ms-4 fs-5" href="placements">Placements</a>
+                  <a class="nav-link ms-4 fs-5" href="contact">Contact us</a>
+                  {% if user.is_authenticated %}
+                  <a class="nav-link ms-4 fs-5" href="logout">Logout</a>
+                  {% else %}
+                  <a class="nav-link ms-4 fs-5" href="login">Login</a>
+                  {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="login">
+        <div class="title">
+          <h2>Register</h2>
+        </div>
+        <div class="container-fluid h-custom">
+          <div class="row">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                class="img-fluid" alt="Sample image">
+            </div>
+            
+            {% for m in messages %}
+            <h4 style="color: red;">{{m}}</h4>
+            {% endfor %}
+            
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 contact-form">
+              <form method="POST" action="register">
+                {% csrf_token %}
+                <div class="row">
+                  <div class="input-group">
+                      <input type="text" id="roll_number" placeholder="Roll Number" name="username" class="input-control" minlength="10" maxlength="10" required>
+                  </div>
+                  <div class="input-group">
+                      <input type="email" id="email" placeholder="Email" name="email" class="input-control" required>
+                  </div>
+                  <div class="input-group">
+                    <input type="password" id="password" placeholder="Password" name="password" class="input-control" required>
+                  </div>
+                  <div class="input-group">
+                    <input type="password" id="cpassword" placeholder="Confirm Password" name="cpassword" class="input-control" required>
+                  </div>
+                                 
+                  <div class="submit-btn">
+                    <input type="submit" value="Register" name="register" class="btn ">
+                  </div>
+                <div class="form-check mb-0">
+                  <p class="small fw-bold mt-2 pt-1 mb-0">Already registered? <a href="login"
+                    class="link-danger">Login</a></p>
+                </div> 
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+     
+
+    <footer id="footer">
+
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+  
+            <div class="col-lg-3 col-md-6 footer-contact">
+              <h3>TNPCELL<span>.</span></h3>
+              <p>
+                VIIT Duvvada Visakhapatnam <br><br>
+                <strong>Phone:</strong> +91 1234567890<br>
+                <strong>Email:</strong> tnpcell4@gmail.com<br>
+              </p>
+            </div>
+  
+            <div class="col-lg-4 col-md-6 footer-links">
+              <h4>Useful Links</h4>
+              <ul>
+                <li><i class="bx bx-chevron-right"></i> <a href="index">Home</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="about">About us</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="training">Training</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="placements">Placements</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="contact">Contact</a></li>
+              </ul>
+            </div>
+  
+            <div class="col-lg-3 col-md-6 footer-links">
+              <h4>Our Services</h4>
+              <ul>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Technical Training</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Logical and Verbal ability</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Critical Thinking</a></li>
+                <li><i class="bx bx-chevron-right"></i> <a href="#">Development</a></li>
+              </ul>
+            </div>
+  
+  
+          </div>
+        </div>
+      </div>
+  
+      <div class="container d-md-flex py-4">
+  
+        <div class="me-md-auto text-center text-md-start">
+          <div class="copyright">
+            &copy; Copyright <strong><span>TNPCELL</span></strong>. All Rights Reserved
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+
+      <!-- <script src="{% static 'script.js' %}"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
+</html>

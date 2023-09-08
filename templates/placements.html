@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <title>TNP</title>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-primary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-4" href="#">
+            <span class="text-light fs-4">TNP</span>CELL
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav ms-auto">
+                    <a class="nav-link ms-4 fs-5" href="index">Home</a>
+                    <a class="nav-link ms-4 fs-5" href="about">About</a>
+                    <a class="nav-link ms-4 fs-5" href="training">Training</a>
+                    <a class="nav-link ms-4 fs-5" href="placements">Placements</a>
+                    <a class="nav-link ms-4 fs-5" href="contact">Contact us</a>
+                    {% if user.is_authenticated %}
+                    <a class="nav-link ms-4 fs-5" href="logout">Logout</a>
+                    {% else %}
+                    <a class="nav-link ms-4 fs-5" href="login">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="title">
+                {% if user.is_authenticated and not user.is_staff %}
+                <h2>Applicable Jobs</h2>
+                {% else %}
+                <h2>Available Jobs</h2>
+                {% endif %}
+            </div>
+            {% if user.is_staff %}
+            <form action="placements" method="POST">
+            {% csrf_token %}
+                <div class="dropdown">
+                    <select name="comp" class="btn btn-primary text-center">
+                        <option disabled="true" selected>Select Company</option>
+                        {% for p in place_det %}
+                        <option>{{p.company}}</option>
+                        {% endfor %}
+                    </select>
+                    <input class="btn btn-info" type="submit" value="select">
+                </div>  
+            </form>
+
+            <h1 class="output"></h1>
+
+                {% for i in place_det %}
+                    {% if i.company == comp  %}
+                    <h1>{{i.company}} Eligible Students List</h1>
+                    <table class="table" >
+                        <thead>
+                        <tr class="text-center">
+                          <th scope="col">Student Name</th>
+                          <th scope="col">Roll Number</th>
+                          <th scope="col">Percentage</th>
+                          <th scope="col">Backlogs</th>
+                        </tr>
+                      </thead>
+                        {% for k in stu_details %}
+                            {% if k.percentage >= i.per and k.backlogs <= i.backlog %}
+                                
+                                <tbody>
+                                  <tr class="text-center">
+                                    <th scope="row">{{k.student_name}}</th>
+                                    <td>{{k.roll_number}}</td>
+                                    <td>{{k.percentage}}</td>
+                                    <td>{{k.backlogs}}</td>
+                                  </tr>
+                                </tbody>
+                            {% endif %}
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
+
+            <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane fade show p-0 active">
+                        {% for p in place_det %}
+                        <div class="job-item p-4 mb-4">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    <img class="flex-shrink-0 img-fluid border rounded" src="{{p.img.url}}" alt="" style="width: 80px; height: 80px;">
+                                    <div class="text-start ps-4">
+                                        <h5 class="mb-3">{{p.eng}}</h5>
+                                        <span class="text-truncate me-3"><i class="text-primary me-2"></i>{{p.company}}</span>
+                                        <span class="text-truncate me-3"><i class="text-primary me-2"></i>{{p.time}}</span>
+                                        <span class="text-truncate me-0"><i class="text-primary me-2"></i>{{p.role}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        {% for i in stu_details %}
+                                
+                                            {% if i.roll_number == user.username %}
+                                                
+                                                {% if i.percentage >= p.per and i.backlogs <= p.backlog %}
+                                                <a class="btn btn-success" href="https://www.accenture.com/in-en/careers/jobdetails?id=646231_india_1&title=EPIC+Systems+Application+Support+Engineer">Apply Now</a>
+                                                {% else %}
+                                                <a class="btn btn-danger disabled" href="">Apply Now</a>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        {% endfor %}
+
+                        <a class="btn btn-primary py-3 px-5" href="">Browse More Jobs</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+</body>
+</html>
